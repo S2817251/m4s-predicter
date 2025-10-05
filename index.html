@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Password Page</title>
+  <title>M4S-PREDICTER</title>
   <style>
     :root{
       --bg-dark:#071426;
@@ -160,9 +160,9 @@
 
   <div class="wrap">
     <div class="head-card" role="banner" aria-label="Brand header">
-      <div class="logo"><img src="51gamelogo.png" alt="Logo"></div>
+      <div class="logo"><img src="game-logo/logo.png" alt="Logo"></div>
       <div class="title-wrap">
-        <p class="title">51game predicter</p>
+        <p class="title">M4S-PREDICTER</p>
         <p class="subtitle">Exclusive access — password required</p>
       </div>
     </div>
@@ -180,10 +180,6 @@
       <div class="process" aria-hidden="false">
         <strong style="display:block; margin-bottom:8px">JOIN TELEGRAM CHANNEL FOR PASSWORD</strong>
 
-        <div style="margin-top:12px">
-          <button id="tgBtn" class="link-btn" style="margin-top:8px">Telegram Chanel</button>
-          <button id="regBtn" class="link-btn">Game Link</button>
-        </div>
       </div>
 
       <footer>© money4salt</footer>
@@ -232,10 +228,10 @@
   const APK_FILENAME = "app.apk";
   const REG_LINK = "https://51gameh.com/#/register?invitationCode=75516113971";
   const TG_LINK  = "https://t.me/+QM9ZM3XiiENjNjZl";
-  const STORED_LETTER_PASS = "jhb";
+  const STORED_LETTER_PASS = "bcebj";
 
   function digitsToLetters(digits) {
-    const map = { '0':'a','1':'b','2':'c','3':'d','4':'e','5':'f','6':'g','7':'h','8':'i','9':'j' };
+    const map = { '0':'a','1':'b','2':'c','3':'d','4':'e','5':'f','6':'g','7':'h','8':'i','9':'j'};
     let out = '';
     for (let ch of String(digits)) { if(map[ch]===undefined) return null; out+=map[ch]; }
     return out;
