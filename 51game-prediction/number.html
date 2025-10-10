@@ -69,7 +69,7 @@
     .btn-yellow{ background: linear-gradient(45deg,#ffcc00,#ff9900); color:#000; box-shadow:0 0 12px rgba(255,200,0,0.5); }
     .btn-dark{ background:#222; color:#fff; border:1px solid #555; }
 
-    /* Popup base (hidden by default) */
+    /* Popup base */
     .popup {
       display: none;
       position: fixed;
@@ -89,7 +89,6 @@
       box-shadow: 0 8px 30px rgba(0,0,0,0.6);
     }
 
-    /* result images */
     .result-images{ display:flex; gap:12px; justify-content:center; margin-bottom:8px; }
     .result-images img{ width:64px; height:64px; border-radius:50%; box-shadow: 0 0 12px rgba(0,255,255,0.5); }
 
@@ -149,6 +148,20 @@
     <button class="btn btn-yellow" onclick="window.location.href='/lvl.html'">LEVEL CHART</button>
   </div>
 
+  <!-- ✅ Added Popup -->
+  <div id="resultPopup" class="popup">
+    <div class="popup-content">
+      <div id="resultImages" class="result-images"></div>
+      <div id="popupMessage" class="popup-message">Next Results</div>
+    </div>
+  </div>
+
+  <!-- ✅ Added Level Popup -->
+  <div id="levelPopup" class="popup" aria-hidden="true">
+    <div class="popup-content">
+      <h3>Level Chart</h3>
+      <img src="/assets/level-chart.png" alt="Level Chart" style="width:100%;border-radius:10px;">
+      <button class="btn btn-dark" onclick="closeLevelChart()">Close</button>
     </div>
   </div>
 
@@ -163,7 +176,6 @@
   let userInput = [];
   const labels = ["10th","9th","8th","7th","6th","5th","4th","3rd","2nd","1st"];
 
-  // create number buttons 0..9
   for (let d = 0; d <= 9; d++) {
     const img = document.createElement('img');
     img.src = `/assets/${d}.png`;
@@ -177,7 +189,6 @@
       userInput.push(num);
       updateCircles();
     }
-    // premium animation: enlarge briefly
     el.classList.add('clicked');
     setTimeout(() => el.classList.remove('clicked'), 140);
   }
@@ -203,35 +214,25 @@
       showError("Please enter last 10 results first!");
       return;
     }
-    const nums = userInput.slice(); // copy
-    const preds = generatePrediction(nums); // returns [p1,p2,p3]
+    const nums = userInput.slice();
+    const preds = generatePrediction(nums);
     showResult(preds);
-
-    // reset input as before
     userInput = [];
     updateCircles();
   }
 
-  /* ---------- Deterministic 3-result predictor ----------
-     1) Primary: weighted recent frequency + streak + small periodic bonus
-     2) Secondary: periodicity detection -> diff-extrapolation -> high-score fallback
-     3) Tertiary: moving average of last 3 -> next-high-score fallback
-     All deterministic, no randomness. Ensure 3 distinct numbers.
-  */
   function generatePrediction(nums) {
-    const n = nums.length; // expected 10
+    const n = nums.length;
     const score = Array(10).fill(0);
 
-    // Weighted recent frequency + streak
     for (let i = 0; i < n; i++) {
       const d = nums[i];
-      const base = i + 1; // older small, newer bigger
+      const base = i + 1;
       const recentBoost = (i === n-1 ? 3 : (i === n-2 ? 1 : 0));
       score[d] += base + recentBoost;
-      if (i > 0 && nums[i] === nums[i-1]) score[d] += 2; // consecutive streak bonus
+      if (i > 0 && nums[i] === nums[i-1]) score[d] += 2;
     }
 
-    // small periodicity bonus per-digit (if positions show repeating gap with gcd <=5)
     for (let d = 0; d <= 9; d++) {
       const pos = [];
       for (let i = 0; i < n; i++) if (nums[i] === d) pos.push(i);
@@ -243,31 +244,24 @@
       }
     }
 
-    // helper to pick top digit by score, tie-break by most recent occurrence
     function pickTopExcept(excludeSet = new Set()) {
       let best = null, bestScore = -Infinity;
       for (let d = 0; d <= 9; d++) {
         if (excludeSet.has(d)) continue;
         const s = score[d] || 0;
         if (s > bestScore) { bestScore = s; best = d; }
-        else if (s === bestScore && s > -Infinity) {
-          // tie-break: choose the one that appeared more recently
+        else if (s === bestScore) {
           const lastA = nums.lastIndexOf(best);
           const lastB = nums.lastIndexOf(d);
           if (lastB > lastA) best = d;
         }
       }
-      if (best === null) {
-        // deterministic fallback
-        for (let d = 0; d <= 9; d++) if (!excludeSet.has(d)) return d;
-      }
+      if (best === null) for (let d = 0; d <= 9; d++) if (!excludeSet.has(d)) return d;
       return best;
     }
 
-    // Primary: highest scored digit
     let primary = pickTopExcept(new Set());
 
-    // Secondary: periodicity detection
     let secondary = null;
     for (let p = 1; p <= 5; p++) {
       let ok = true;
@@ -280,7 +274,6 @@
       }
     }
 
-    // If not found by periodicity, try diff-extrapolation
     if (secondary === null) {
       const last = nums[n-1], prev = nums[n-2];
       const diff = (last - prev + 10) % 10;
@@ -292,46 +285,29 @@
       }
     }
 
-    // If still null, pick next-high-score excluding primary
     if (secondary === null) secondary = pickTopExcept(new Set([primary]));
 
-    // Tertiary: moving average of last 3
     const avg = Math.round((nums[n-3] + nums[n-2] + nums[n-1]) / 3) % 10;
     let tertiary = avg;
-    // ensure uniqueness
-    if (tertiary === primary || tertiary === secondary) {
-      // pick next-high-score excluding primary & secondary
+    if (tertiary === primary || tertiary === secondary)
       tertiary = pickTopExcept(new Set([primary, secondary]));
-    }
 
-    // Final safety: if duplicates remain, deterministic shifts
     const seen = new Set();
     primary = normalizeDigit(primary); seen.add(primary);
-    if (seen.has(secondary)) {
-      secondary = (primary + 3) % 10;
-    } else secondary = normalizeDigit(secondary);
+    if (seen.has(secondary)) secondary = (primary + 3) % 10; else secondary = normalizeDigit(secondary);
     seen.add(secondary);
     if (seen.has(tertiary)) {
-      // try shift by +5 then lowest unused
       let cand = (primary + 5) % 10;
       if (!seen.has(cand)) tertiary = cand;
-      else {
-        for (let d = 0; d < 10; d++) if (!seen.has(d)) { tertiary = d; break; }
-      }
+      else for (let d = 0; d < 10; d++) if (!seen.has(d)) { tertiary = d; break; }
     } else tertiary = normalizeDigit(tertiary);
 
     return [primary, secondary, tertiary];
   }
 
-  function normalizeDigit(x){
-    let d = Number(x) || 0;
-    d = ((d % 10) + 10) % 10;
-    return d;
-  }
+  function normalizeDigit(x){ return ((Number(x) % 10) + 10) % 10; }
+  function gcd(a,b){ return b ? gcd(b, a % b) : a; }
 
-  function gcd(a,b){ if(!b) return a; return gcd(b, a % b); }
-
-  // show result popup (3s)
   function showResult(pred) {
     resultImages.innerHTML = "";
     pred.forEach(d => {
@@ -343,12 +319,9 @@
     popupMessage.classList.remove('error');
     popupMessage.textContent = "Next Results";
     resultPopup.style.display = 'flex';
-
-    // auto-hide after 3s
     setTimeout(() => { resultPopup.style.display = 'none'; }, 3000);
   }
 
-  // show error in same popup for 2s
   function showError(msg) {
     resultImages.innerHTML = "";
     popupMessage.classList.add('error');
@@ -360,11 +333,7 @@
     }, 2000);
   }
 
-  // level chart
-  function openLevelChart(){ levelPopup.style.display = 'flex'; levelPopup.setAttribute('aria-hidden','false'); }
-  function closeLevelChart(){ levelPopup.style.display = 'none'; levelPopup.setAttribute('aria-hidden','true'); }
-
-  // init
+  function closeLevelChart(){ levelPopup.style.display = 'none'; }
   updateCircles();
 </script>
 </body>
