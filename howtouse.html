@@ -20,7 +20,7 @@
       min-height: 100vh;
       box-sizing: border-box;
     }
-    h2 {
+    h2, h3 {
       text-align: center;
       color: #ffd700;
     }
@@ -47,6 +47,21 @@
       border-radius: 5px;
       font-size: 16px;
       margin-top: 20px;
+      cursor: pointer;
+    }
+    .disclaimer {
+      background: #25294a;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 25px;
+      font-size: 14px;
+      line-height: 1.6;
+      border: 1px solid #383d65;
+    }
+    .disclaimer h4 {
+      color: #ffcc00;
+      margin-bottom: 10px;
+      text-align: center;
     }
   </style>
 </head>
@@ -57,18 +72,36 @@
     <ul>
       <li>Select your mines using the dropdown arrow.</li>
       <li>Click <b>START</b> to reveal results.</li>
-      <li>If your 1st bet loss then follow same prediction with 2nd level then 3rd and 4th.</li>
+      <li>If your 1st bet loses, follow the same prediction with 2nd, 3rd, and 4th levels.</li>
       <li>Use <b>NEXT</b> to continue playing with the same mines.</li>
       <li>To change mines, click the arrow again → it resets everything.</li>
-      <li>Never bet all wallet always play with level and suffisent balance.</li>
     </ul>
 
     <div class="image-box">
       <img src="/lvl.png" alt="Level Chart"> 
     </div>
 
-   <button onclick="window.history.back()">⬅ Back</button>
+    <div class="disclaimer">
+      <h4>⚠ Important Disclaimer</h4>
+      <p>
+        This predictor is created only for <b>fun and time pass</b> purposes.  
+        It is meant to be used with <b>demo accounts only</b> — not for real money games.  
+      </p>
+      <p>
+        All <b>videos, images, and examples</b> shown here are recorded using <b>demo accounts</b> only.  
+        You should also play and test only in demo mode.
+      </p>
+      <p>
+        Any links provided on this website are given <b>only to open the game and access demo accounts</b>.  
+        Please <b>do not deposit real money</b> or place real bets.
+      </p>
+      <p>
+        We are <b>not responsible</b> for any kind of financial loss or misuse.  
+        Use this predictor at your own discretion and for entertainment only.
+      </p>
+    </div>
 
+    <button onclick="window.history.back()">⬅ Back</button>
   </div>
 </body>
 </html>
