@@ -16,33 +16,27 @@
       --telegram:#2AABEE;
     }
 
-    /* Reset */
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
     body{
-      font-family: "Segoe UI", Inter, system-ui, -apple-system, "Helvetica Neue", Arial;
+      font-family:"Segoe UI", Inter, system-ui, -apple-system, "Helvetica Neue", Arial;
       background: radial-gradient(900px 360px at 10% 12%, rgba(250,204,21,0.03), transparent),
                   linear-gradient(180deg, var(--bg-dark), var(--bg-mid));
       color:#fff;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
       overflow:hidden;
     }
 
-    /* MATRIX CANVAS - fills background */
     canvas#matrix {
       position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
       z-index: 0;
-      display: block;
       filter: contrast(1.05) saturate(1.05) blur(0.6px);
       opacity: 0.65;
       pointer-events: none;
     }
 
-    /* Overlay subtle scanlines for texture */
     .scanlines {
       position: fixed; inset:0; z-index:1; pointer-events:none;
       background-image: repeating-linear-gradient(
@@ -54,7 +48,6 @@
       opacity:0.5;
     }
 
-    /* Neon-ish radial glow (top-left) */
     .neon {
       position: fixed; inset: auto  -120px -220px auto; z-index:1; pointer-events:none;
       width:420px;height:420px;
@@ -64,7 +57,6 @@
       opacity:0.6;
     }
 
-    /* Centering panel: sits in middle and uses half viewport height */
     .wrap{
       position:relative;
       z-index:10;
@@ -78,7 +70,7 @@
     .panel{
       width:100%;
       max-width:420px;
-      height:50vh; /* half of viewport height */
+      height:auto;
       background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       border-radius: var(--panel-radius);
       padding:20px;
@@ -92,11 +84,7 @@
       backdrop-filter: blur(6px) saturate(1.05);
     }
 
-    /* Top logo only */
-    .brand{
-      display:flex;flex-direction:column;align-items:center;gap:8px;
-      margin-bottom:4px;
-    }
+    .brand{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:4px;}
     .brand img{
       width:86px;height:86px;border-radius:16px;object-fit:contain;
       box-shadow: 0 10px 26px rgba(250,204,21,0.14), inset 0 -6px 18px rgba(0,0,0,0.45);
@@ -107,250 +95,190 @@
       font-weight:800;
     }
 
-    /* Buttons list (text-only inside buttons) */
-    .buttons{
-      width:100%;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      align-items:center;
-      padding: 0 6px;
-    }
-
+    .buttons{width:100%;display:flex;flex-direction:column;gap:14px;align-items:center;padding: 0 6px;}
     .game-btn{
-      width:100%;
-      display:inline-flex;
-      align-items:center;
-      gap:12px;
-      justify-content:flex-start;
-      padding:14px 18px;
-      border-radius: var(--btn-radius);
-      text-decoration:none;
-      color: #071014;
-      font-weight:800;
-      font-size:16px;
-      letter-spacing:0.3px;
-      transform: translateZ(0);
-      border: none;
-      cursor:pointer;
-      position:relative;
-      overflow:hidden;
-      transition: transform .18s cubic-bezier(.2,.9,.3,1), box-shadow .18s ease;
+      width:100%;display:inline-flex;align-items:center;gap:12px;justify-content:flex-start;
+      padding:14px 18px;border-radius: var(--btn-radius);text-decoration:none;
+      color: #071014;font-weight:800;font-size:16px;letter-spacing:0.3px;
+      position:relative;overflow:hidden;transition: transform .18s, box-shadow .18s;
       box-shadow: 0 8px 26px rgba(2,6,23,0.55), inset 0 -6px 14px rgba(0,0,0,0.25);
       background: linear-gradient(90deg, var(--accent), var(--accent-2));
     }
+    .game-btn:hover{transform: translateY(-6px) scale(1.02);box-shadow: 0 18px 40px rgba(250,204,21,0.22);}
+    .game-btn .ico{width:40px;height:40px;border-radius:10px;overflow:hidden;}
+    .game-btn .label{display:flex;flex-direction:column;line-height:1;}
+    .game-btn .label .title{font-weight:900;font-size:15px;}
+    .game-btn .label .sub{font-size:12px;margin-top:3px;font-weight:700;opacity:0.6;}
 
-    /* subtle gloss stripe */
-    .game-btn::before{
-      content:"";
-      position:absolute;left:-40%;top:-20%;width:80%;height:200%;
-      background: linear-gradient(120deg, rgba(255,255,255,0.12), rgba(255,255,255,0.02));
-      transform: rotate(-18deg);
-      opacity:0.25;
-      transition: all 0.4s ease;
-      pointer-events:none;
-    }
-
-    .game-btn:hover{
-      transform: translateY(-6px) scale(1.02);
-      box-shadow: 0 18px 40px rgba(250,204,21,0.22), inset 0 -6px 18px rgba(0,0,0,0.35);
-    }
-    .game-btn:active{
-      transform: translateY(2px) scale(0.995);
-    }
-    .game-btn .ico{
-      display:inline-grid;place-items:center;
-      width:40px;height:40px;border-radius:10px;
-      background: linear-gradient(180deg, rgba(0,0,0,0.18), rgba(255,255,255,0.05));
-      box-shadow: 0 6px 12px rgba(0,0,0,0.35), inset 0 -4px 8px rgba(255,255,255,0.03);
-      font-size:18px;
-    }
-
-    .game-btn .label{
-      display:flex;flex-direction:column;align-items:flex-start;
-      line-height:1;
-    }
-    .game-btn .label .title{
-      color:#071014;font-weight:900;font-size:15px;
-    }
-    .game-btn .label .sub{
-      color: rgba(7,16,20,0.6);font-size:12px;margin-top:3px;font-weight:700;
-    }
-
-    /* HELP button style (Telegram) */
-    .help-wrap{
-      width:100%;
-      display:flex;
-      justify-content:center;
-      margin-top:6px;
-    }
+    .help-wrap{width:100%;display:flex;justify-content:center;margin-top:6px;}
     .help-btn{
-      width:95%;
-      max-width:340px;
-      display:inline-flex;
-      align-items:center;
-      gap:12px;
-      padding:12px 16px;
-      border-radius:12px;
-      text-decoration:none;
-      color:#fff;
-      font-weight:800;
-      font-size:15px;
-      background: linear-gradient(90deg, rgba(42,171,238,1), rgba(16,150,218,1));
-      box-shadow: 0 10px 26px rgba(42,171,238,0.12), inset 0 -4px 12px rgba(0,0,0,0.25);
-      border: 1px solid rgba(255,255,255,0.04);
-      transition: transform .15s ease, box-shadow .15s ease;
-    }
-    .help-btn:hover{ transform: translateY(-4px); box-shadow: 0 18px 40px rgba(42,171,238,0.18); }
-    .help-btn .tg-icon{
-      width:40px;height:40px;border-radius:9px;background:rgba(255,255,255,0.06);
-      display:grid;place-items:center;font-size:18px;
-      box-shadow: inset 0 -3px 8px rgba(255,255,255,0.02);
+      width:95%;max-width:340px;display:inline-flex;align-items:center;gap:12px;
+      padding:12px 16px;border-radius:12px;text-decoration:none;color:#fff;font-weight:800;
+      font-size:15px;background: linear-gradient(90deg, rgba(42,171,238,1), rgba(16,150,218,1));
+      box-shadow: 0 10px 26px rgba(42,171,238,0.12);border: 1px solid rgba(255,255,255,0.04);
     }
 
-    .note{
-      margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);
-      text-align:center;
+    .note{margin-top:6px;font-size:12px;color:rgba(255,255,255,0.6);text-align:center;}
+
+    /* ⚠ Disclaimer button */
+    .disclaimer-btn {
+      background: linear-gradient(90deg, #facc15, #ffd86b);
+      color: #000;
+      font-weight: 900;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(250,204,21,0.6);
+      animation: pulse 1.4s infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px rgba(250,204,21,0.4); transform: scale(1); }
+      50% { box-shadow: 0 0 24px rgba(250,204,21,0.9); transform: scale(1.05); }
+      100% { box-shadow: 0 0 10px rgba(250,204,21,0.4); transform: scale(1); }
+    }
+
+    /* 📌 Disclaimer Popup */
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+    .popup-content {
+      background: #1b1f38;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 360px;
+      text-align: center;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      animation: fadeIn 0.4s ease;
+    }
+    .popup-content h3 {
+      color: #ffd700;
+      margin-bottom: 10px;
+    }
+    .popup-content p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+    .close-btn {
+      background: #facc15;
+      color: #000;
+      padding: 8px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.9);}
+      to {opacity: 1; transform: scale(1);}
     }
 
     @media (max-width:420px){
-      .panel{padding:16px;height:54vh}
+      .panel{padding:16px;height:auto}
       .brand img{width:72px;height:72px}
       .brand h1{font-size:20px}
       .game-btn{padding:12px 14px;font-size:15px}
-      .game-btn .ico{width:36px;height:36px;font-size:16px}
-      .help-btn{padding:10px 12px;font-size:14px}
     }
   </style>
 </head>
 <body>
-  <!-- Matrix canvas & overlays -->
-  <canvas id="matrix" aria-hidden="true"></canvas>
-  <div class="scanlines" aria-hidden="true"></div>
-  <div class="neon" aria-hidden="true"></div>
+  <canvas id="matrix"></canvas>
+  <div class="scanlines"></div>
+  <div class="neon"></div>
 
   <div class="wrap">
-    <div class="panel" role="region" aria-label="MONEY 4 SALT launcher">
-      <div class="brand" aria-hidden="false">
-        <img src="/game-logo/logo.png" alt="logo" onerror="this.style.display='none'">
+    <div class="panel">
+      <div class="brand">
+        <img src="/game-logo/logo.png" alt="logo">
         <h1>M4S PREDICTER</h1>
       </div>
 
-      <nav class="buttons" aria-label="Game links">
-        <a class="game-btn" href="/51game-prediction/index.html" aria-label="Open Mines Hack">
-  <div class="ico" aria-hidden="true">
-    <img src="/game-logo/51gamelogo.png" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
-  </div>
-  <div class="label">
-    <div class="title">51Game Predicter</div>
-    <div class="sub"></div>
-  </div>
-</a>
 
+      <nav class="buttons">
+        <a class="game-btn" href="/51game-prediction/index.html">
+          <div class="ico">
+            <img src="/game-logo/51gamelogo.png" alt="" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <div class="label">
+            <div class="title">51Game Predicter</div>
+          </div>
+        </a>
 
-<a class="game-btn" href="/rg-prediction/index.html" aria-label="Open Number Hack">
-  <div class="ico" aria-hidden="true">
-    <img src="/game-logo/rglogo.png" alt="" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
-  </div>
-  <div class="label">
-    <div class="title">Raja Game Predicter</div>
-    <div class="sub"></div>
-  </div>
-</a>
-
+        <a class="game-btn" href="/rg-prediction/index.html">
+          <div class="ico">
+            <img src="/game-logo/rglogo.png" alt="" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <div class="label">
+            <div class="title">Raja Game Predicter</div>
+          </div>
+        </a>
       </nav>
 
-      <div class="note">if you have any doubt then contact me through help supprt bot.</div>
+      <div class="note">If you have any doubt, contact through help support bot.</div>
 
-      <!-- HELP SUPPORT button (Telegram) -->
-      <!-- Replace 'YourHelpBot' in the href below with your actual Telegram bot username (without @) -->
       <div class="help-wrap">
-        <div class="help-wrap">
-  <a class="help-btn" href="https://t.me/money4salt_bot" target="_blank" rel="noopener noreferrer" aria-label="Open Help Bot on Telegram">
-    <div class="tg-icon" aria-hidden="true">
-      <img src="/game-logo/telegram.png" alt="Telegram Logo" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
-    </div>
-    <div style="display:flex;flex-direction:column;align-items:flex-start;line-height:1">
-      <div style="font-weight:900;font-size:15px">HELP SUPPORT</div>
-      <div style="font-size:12px;opacity:0.9">Contact via Telegram</div>
-    </div>
-  </a>
-</div>
-
+        <a class="help-btn" href="https://t.me/money4salt_bot" target="_blank">
+          <div style="width:40px;height:40px;border-radius:9px;overflow:hidden;">
+            <img src="/game-logo/telegram.png" alt="Telegram" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-start;line-height:1">
+            <div style="font-weight:900;font-size:15px">HELP SUPPORT</div>
+            <div style="font-size:12px;opacity:0.9">Contact via Telegram</div>
+          </div>
+        </a>
       </div>
+      <!-- ⚠ Disclaimer Button -->
+      <button class="disclaimer-btn" onclick="openPopup()">⚠ Disclaimer</button>
+    </div>
+  </div>
+  
 
+
+  <!-- 📌 Disclaimer Popup -->
+  <div class="popup" id="disclaimerPopup">
+    <div class="popup-content">
+      <h3>⚠ Important Disclaimer</h3>
+      <p>
+        This website and predictor are created only for <b>fun and time pass</b> purposes.  
+        It should be used <b>only in demo accounts</b> — not for real money games.
+      </p>
+      <p>
+        All <b>videos, images, and results</b> shown here are recorded using <b>demo accounts</b> only.  
+        We are <b>not responsible</b> for any kind of financial loss.
+      </p>
+      <p>
+        The links provided on this website are only for <b>opening the game and demo accounts</b>.  
+        Please do <b>not deposit real money</b> or place any real bets.
+      </p>
+      <p style="color:#ff7070;font-weight:bold;">
+        Our predictor must be used <b>only on demo accounts</b>.  
+        If you don’t have a demo account, then this website is not for you.
+      </p>
+      <button class="close-btn" onclick="closePopup()">CLOSE</button>
     </div>
   </div>
 
   <script>
-    // Matrix binary rain - lightweight, adaptive density for mobile
-    (function(){
-      const canvas = document.getElementById('matrix');
-      const ctx = canvas.getContext('2d');
-      let width, height, cols, fontSize, drops, densityFactor;
-
-      function setup(){
-        width = canvas.width = innerWidth;
-        height = canvas.height = innerHeight;
-        fontSize = Math.max(10, Math.floor(width / 80));
-        cols = Math.floor(width / fontSize);
-        densityFactor = (width < 420) ? 0.45 : (width < 768 ? 0.7 : 1);
-        cols = Math.floor(cols * densityFactor);
-        drops = new Array(cols).fill(1);
-        ctx.font = fontSize + 'px monospace';
-      }
-
-      function draw(){
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
-        ctx.fillRect(0, 0, width, height);
-
-        const gradient = ctx.createLinearGradient(0,0,0,height);
-        gradient.addColorStop(0, 'rgba(0,255,180,0.95)');
-        gradient.addColorStop(0.6, 'rgba(0,255,140,0.6)');
-        gradient.addColorStop(1, 'rgba(0,255,120,0.4)');
-        ctx.fillStyle = gradient;
-
-        for(let i = 0; i < cols; i++){
-          const x = i * fontSize;
-          const y = drops[i] * fontSize;
-          const chars = '01αβχδ0123456789ABCDEF';
-          const text = chars.charAt(Math.floor(Math.random() * chars.length));
-          ctx.fillText(text, x, y);
-          if(y > height + Math.random() * 10000) drops[i] = 0;
-          drops[i]++;
-        }
-      }
-
-      let rafId;
-      function loop(){
-        draw();
-        rafId = requestAnimationFrame(loop);
-      }
-
-      function init(){
-        cancelAnimationFrame(rafId);
-        setup();
-        ctx.fillStyle = 'rgba(0,0,0,1)'; ctx.fillRect(0,0,width,height);
-        loop();
-      }
-      init();
-
-      let resizeTO;
-      addEventListener('resize', () => {
-        clearTimeout(resizeTO);
-        resizeTO = setTimeout(init, 250);
-      });
-
-      document.addEventListener('visibilitychange', () => {
-        if(document.hidden) cancelAnimationFrame(rafId);
-        else init();
-      });
-
-      if (navigator.deviceMemory && navigator.deviceMemory < 2) {
-        densityFactor = 0.45;
-        init();
-      }
-    })();
+    function openPopup(){
+      document.getElementById('disclaimerPopup').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+    function closePopup(){
+      document.getElementById('disclaimerPopup').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
   </script>
 </body>
 </html>
