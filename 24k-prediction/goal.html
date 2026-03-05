@@ -17,7 +17,7 @@ body {
   color: #fff;
 }
 
-/* Compact Card */
+/* Card */
 .card {
   display: flex;
   align-items: center;
@@ -45,15 +45,15 @@ body {
 /* Grid */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(7, 50px);
-  grid-template-rows: repeat(4, 50px);
+  grid-template-columns: repeat(7, 60px);
+  grid-template-rows: repeat(4, 60px);
   gap: 6px;
   margin-top: 15px;
 }
 
 .grid-item {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   background-color: #14532d;
   border: 2px solid #22c55e;
   border-radius: 6px;
@@ -96,19 +96,29 @@ body {
 
 /* Mobile Responsive */
 @media (max-width: 600px) {
+
   .grid-container {
-    grid-template-columns: repeat(7, 35px);
-    grid-template-rows: repeat(4, 35px);
-    gap: 4px;
+    grid-template-columns: repeat(7, 45px);
+    grid-template-rows: repeat(4, 45px);
+    gap: 5px;
   }
 
   .grid-item {
-    width: 35px;
-    height: 35px;
+    width: 45px;
+    height: 45px;
+  }
+
+  .card {
+    padding: 6px 12px;
   }
 
   .card img {
-    width: 45px;
+    width: 40px;
+  }
+
+  #startBtn, .link-btn {
+    width: 85%;
+    font-size: 15px;
   }
 }
 </style>
@@ -139,6 +149,7 @@ body {
 
 <!-- Links -->
 <div class="button-container">
+
   <button class="link-btn"
     onclick="window.open('https://www.24kparty2.win/#/pages/login/register?invitationCode=2795179652', '_blank')">
     🔗 24K LINK
@@ -148,6 +159,7 @@ body {
     onclick="window.open('https://t.me/+QM9ZM3XiiENjNjZl', '_blank')">
     📢 TELEGRAM CHANNEL
   </button>
+
 </div>
 
 <script>
