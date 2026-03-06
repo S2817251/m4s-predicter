@@ -177,8 +177,8 @@ function createGrid() {
 }
 
 function placeGoals() {
-  for (let col = 0; col < 4; col++) {
-    const randomRow = Math.floor(Math.random() * 4);
+  for (let col = 0; col < 3; col++) {
+    const randomRow = Math.floor(Math.random() * 3);
     const index = randomRow * 7 + col;
     const goalItem = gridContainer.children[index];
 
