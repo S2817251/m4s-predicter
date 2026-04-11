@@ -221,6 +221,45 @@
       .game-btn .ico{width:36px;height:36px;font-size:16px}
       .help-btn{padding:10px 12px;font-size:14px}
     }
+    /* ⚠ Disclaimer button */
+.disclaimer-btn {
+  background: linear-gradient(90deg, #facc15, #ffd86b);
+  color: #000;
+  font-weight: 900;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(250,204,21,0.6);
+  margin-top: 10px;
+}
+
+/* 📌 Popup */
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+.popup-content {
+  background: #1b1f38;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 360px;
+  text-align: center;
+  color: #fff;
+}
+.close-btn {
+  background: #facc15;
+  color: #000;
+  padding: 8px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
   </style>
 </head>
 <body>
@@ -246,7 +285,7 @@
         </a>
 
          <a class="game-btn" href="/51game-prediction/goal.html" aria-label="Open goal predicter">
-          <div class="ico" aria-hidden="true">⚽</div>
+          <div class="ico" aria-hidden="true">🥅</div>
           <div class="label">
             <div class="title">Goal Game Predicter</div>
             <div class="sub"></div>
@@ -278,9 +317,8 @@
     </div>
   </a>
 </div>
-
       </div>
-
+<button class="disclaimer-btn" onclick="openPopup()">⚠ Disclaimer</button>
     </div>
   </div>
 
@@ -354,5 +392,27 @@
       }
     })();
   </script>
+  <!-- 📌 Disclaimer Popup -->
+<div class="popup" id="disclaimerPopup">
+  <div class="popup-content">
+    <h3>⚠ Important Disclaimer</h3>
+    <p>
+      This website and predictor are created only for <b>fun and time pass</b>.
+      Use only demo account.
+    </p>
+    <button class="close-btn" onclick="closePopup()">CLOSE</button>
+  </div>
+</div>
+
+<script>
+function openPopup(){
+  document.getElementById('disclaimerPopup').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+function closePopup(){
+  document.getElementById('disclaimerPopup').style.display='none';
+  document.body.style.overflow='auto';
+}
+</script>
 </body>
 </html>
