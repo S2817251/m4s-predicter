@@ -150,7 +150,7 @@ body{
 <div id="resultPopup" class="popup">
 <div class="popup-content">
 <div id="resultImages" class="result-images"></div>
-<div id="popupMessage">Next 5 Results</div>
+<div id="popupMessage">Next 4 Results</div>
 </div>
 </div>
 
@@ -226,7 +226,7 @@ function generatePrediction(nums) {
 
   digits.sort((a, b) => b.value - a.value);
 
-  return digits.slice(0, 5).map(d => d.digit);
+  return digits.slice(0, 4).map(d => d.digit);
 }
 
 function showResult(arr) {
