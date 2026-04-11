@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GOAL PREDICTER</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #14532d, #166534, #15803d);
+  margin: 0;
+  padding: 10px 0;
+  color: #fff;
+}
+
+/* Card */
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #166534;
+  padding: 8px 15px;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.5);
+  margin-top: 8px;
+  gap: 10px;
+}
+
+.card img {
+  width: 55px;
+  border-radius: 5px;
+  border: 2px solid #22c55e;
+}
+
+.cardinfo h5 {
+  margin: 0;
+  font-size: 1rem;
+  color: #22c55e;
+}
+
+/* Grid */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(7, 60px);
+  grid-template-rows: repeat(4, 60px);
+  gap: 6px;
+  margin-top: 15px;
+}
+
+.grid-item {
+  width: 60px;
+  height: 60px;
+  background-color: #14532d;
+  border: 2px solid #22c55e;
+  border-radius: 6px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+  transition: transform 0.3s ease;
+}
+
+.grid-item.goal {
+  background-image: url('/assets/goal.png');
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.15);
+  box-shadow: 0 5px 10px rgba(34, 197, 94, 0.6);
+}
+
+/* Buttons */
+#startBtn, .link-btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-top: 15px;
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#startBtn:hover, .link-btn:hover {
+  background-color: #16a34a;
+  transform: scale(1.05);
+}
+
+.button-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+
+  .grid-container {
+    grid-template-columns: repeat(7, 45px);
+    grid-template-rows: repeat(4, 45px);
+    gap: 5px;
+  }
+
+  .grid-item {
+    width: 45px;
+    height: 45px;
+  }
+
+  .card {
+    padding: 6px 12px;
+  }
+
+  .card img {
+    width: 40px;
+  }
+
+  #startBtn, .link-btn {
+    width: 85%;
+    font-size: 15px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Main Card -->
+<div class="card">
+  <img src="/game-logo/rglogo.png" alt="Game Logo">
+  <div class="cardinfo">
+    <h5>⚽ RAJA GAME GOAL PREDICTER</h5>
+  </div>
+</div>
+
+<!-- FIELD Card -->
+<div class="card">
+  <div class="cardinfo">
+    <h5>🎯 FIELD: MEDIUM | 💣 MINES: 1</h5>
+  </div>
+</div>
+
+<!-- Grid -->
+<div class="grid-container" id="gridContainer"></div>
+
+<!-- Start Button -->
+<button id="startBtn">⚽ START</button>
+
+<!-- Links -->
+<div class="button-container">
+
+  <button class="link-btn"
+    onclick="window.open('https://www.rajastake5.com/#/register?invitationCode=55424116012', '_blank')">
+    🔗 24K LINK
+  </button>
+
+  <button class="link-btn"
+    onclick="window.open('https://t.me/+QM9ZM3XiiENjNjZl', '_blank')">
+    📢 TELEGRAM CHANNEL
+  </button>
+
+</div>
+
+<script>
+const gridContainer = document.getElementById('gridContainer');
+const startBtn = document.getElementById('startBtn');
+let isFirstPrediction = true;
+
+function createGrid() {
+  gridContainer.innerHTML = '';
+  for (let i = 0; i < 28; i++) {
+    const gridItem = document.createElement('div');
+    gridItem.classList.add('grid-item');
+    gridContainer.appendChild(gridItem);
+  }
+}
+
+function placeGoals() {
+  for (let col = 0; col < 3; col++) {
+    const randomRow = Math.floor(Math.random() * 3);
+    const index = randomRow * 7 + col;
+    const goalItem = gridContainer.children[index];
+
+    setTimeout(() => {
+      goalItem.classList.add('goal');
+    }, col * 250);
+  }
+}
+
+startBtn.addEventListener('click', () => {
+  createGrid();
+  placeGoals();
+
+  if (isFirstPrediction) {
+    startBtn.innerText = "🔁 NEXT";
+    isFirstPrediction = false;
+  }
+});
+
+createGrid();
+</script>
+
+</body>
+</html>
